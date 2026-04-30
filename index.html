@@ -1,0 +1,1059 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>CahayaJiwa - Aplikasi Motivasi</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Feather Icons -->
+    <script src="https://unpkg.com/feather-icons"></script>
+    
+    <style>
+        /* Animasi Kustom */
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-8px); }
+            100% { transform: translateY(0px); }
+        }
+        .animate-float {
+            animation: float 3.5s ease-in-out infinite;
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in-up {
+            animation: fadeInUp 0.4s ease-out forwards;
+        }
+        /* Style Reset untuk Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #000;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #333;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+        body {
+            touch-action: pan-y;
+        }
+    </style>
+</head>
+<body class="font-sans antialiased bg-black text-slate-200 selection:bg-purple-500/30">
+
+    <!-- Container Utama Aplikasi -->
+    <div id="app"></div>
+
+    <!-- SCRIPT 1: UI & Tampilan Utama -->
+    <script>
+        // --- DATA MOCKUP (Akan bergabung dengan data dari Internet) ---
+        window.motivationalData = {
+            remaja: {
+                title: "Ruang Remaja",
+                subtitle: "Temukan jati dirimu dan raih mimpimu.",
+                theme: "from-blue-500 to-purple-600",
+                bgTheme: "bg-slate-900",
+                articles: [
+                    {
+                        id: "r1",
+                        title: "Bangkit dari Rasa Insecure",
+                        icon: "heart", iconColor: "text-pink-400",
+                        excerpt: "Merasa kurang dari orang lain itu wajar, tapi jangan biarkan itu menghentikanmu.",
+                        content: `Masa remaja adalah masa di mana kita paling sering membandingkan diri dengan orang lain. Melihat teman yang lebih pintar, lebih menarik, atau lebih populer seringkali membuat kita merasa 'insecure' atau tidak aman.
+                        
+Namun, ingatlah satu hal: setiap orang memiliki garis waktunya sendiri. Bunga tidak mekar bersamaan, begitu pula dengan manusia. Rasa insecuremu hari ini adalah tanda bahwa kamu peduli dengan perkembangan dirimu. 
+
+Alih-alih fokus pada apa yang tidak kamu miliki, mulailah berterima kasih atas apa yang ada padamu. Ubah rasa iri menjadi inspirasi. Kamu unik, dan dunia membutuhkan keunikanmu, bukan versi tiruan dari orang lain. Tarik napas dalam-dalam, hargai prosesmu, dan teruslah melangkah maju.`
+                    },
+                    {
+                        id: "r2",
+                        title: "Gagal Ujian Bukan Akhir Dunia",
+                        icon: "zap", iconColor: "text-yellow-400",
+                        excerpt: "Nilai di atas kertas tidak mendefinisikan siapa dirimu di masa depan.",
+                        content: `Dapat nilai jelek? Gagal masuk sekolah atau kampus impian? Rasanya pasti hancur dan dunia seakan runtuh. Tapi percayalah, ini bukan akhir dari segalanya.
+
+Banyak tokoh sukses dunia yang pernah mengalami kegagalan akademis. Nilai hanyalah angka yang mengukur pemahamanmu pada satu waktu tertentu terhadap satu mata pelajaran tertentu. Ia tidak mengukur kreativitasmu, empatimu, atau ketangguhanmu.
+
+Gunakan kegagalan ini sebagai bahan evaluasi, bukan alat untuk menghukum diri sendiri. Menangislah jika perlu, tapi setelah itu bangkitlah. Peluang kesuksesan memiliki banyak jalan, dan kegagalan ini mungkin sedang mengarahkanmu ke jalan yang jauh lebih baik yang tidak pernah kamu bayangkan sebelumnya.`
+                    },
+                    {
+                        id: "r3",
+                        title: "Seni Memilih Lingkaran Pertemanan",
+                        icon: "compass", iconColor: "text-blue-400",
+                        excerpt: "Kamu adalah rata-rata dari lima orang terdekatmu. Pilihlah dengan bijak.",
+                        content: `Di masa remaja, teman adalah segalanya. Kita ingin diterima dan menjadi bagian dari suatu kelompok. Namun, sangat penting untuk menyadari bahwa tidak semua teman membawa pengaruh baik.
+
+Pertemanan yang sehat seharusnya membuatmu merasa didukung, aman, dan memotivasi kamu untuk menjadi lebih baik. Jika kamu berada di lingkungan yang selalu merendahkanmu, memaksamu melakukan hal buruk, atau membuatmu kelelahan secara mental, itu adalah 'toxic friendship'.
+
+Jangan takut untuk melepaskan teman yang beracun. Lebih baik memiliki sedikit teman tapi tulus, daripada banyak teman tapi membuatmu kehilangan dirimu sendiri. Mulailah mencari komunitas yang sejalan dengan hobi dan nilai-nilai positifmu.`
+                    },
+                    {
+                        id: "r4",
+                        title: "Dunia Maya vs Dunia Nyata",
+                        icon: "star", iconColor: "text-indigo-400",
+                        excerpt: "Jangan membandingkan realitasmu dengan etalase media sosial orang lain.",
+                        content: `Di era digital ini, sangat mudah untuk merasa tertinggal hanya dengan melihat layar ponsel. Orang lain terlihat memiliki kulit yang sempurna, pencapaian yang hebat, dan kehidupan sosial yang luar biasa. 
+
+Namun, kamu harus selalu ingat: media sosial adalah etalase, bukan gudang. Orang hanya memamerkan momen-momen terbaik (highlight reel) mereka, bukan perjuangan, air mata, atau kegagalan yang terjadi di baliknya.
+
+Kurangi waktu layar (screen time) jika itu membuatmu merasa cemas. Kembalilah ke dunia nyata. Fokus pada langkah kecilmu hari ini, sapalah orang di sekitarmu, dan sadari bahwa hidupmu terlalu berharga untuk sekadar dijadikan ajang pamer di dunia maya.`
+                    },
+                    {
+                        id: "r5",
+                        title: "Berani Mencoba, Berani Gagal",
+                        icon: "zap", iconColor: "text-orange-400",
+                        excerpt: "Penyesalan terbesar biasanya bukan karena gagal, tapi karena tidak pernah mencoba.",
+                        content: `Masa muda adalah waktu terbaik untuk melakukan kesalahan. Mungkin kamu ragu untuk ikut audisi, mencoba ekstrakurikuler baru, atau menyatakan perasaan karena takut ditolak atau gagal.
+
+Ketakutan adalah hal yang wajar, tapi jangan biarkan ia menyetir hidupmu. Kegagalan bukanlah kebalikan dari kesuksesan; ia adalah bagian dari kesuksesan itu sendiri. Setiap kali kamu gagal, kamu belajar satu cara yang tidak berhasil, dan itu membawamu selangkah lebih dekat pada keberhasilan.
+
+Lompatlah selagi kamu masih punya banyak waktu untuk bangkit. Lebarkan sayapmu, coba hal-hal baru, dan temukan potensi dirimu yang sesungguhnya.`
+                    },
+                    {
+                        id: "r6",
+                        title: "Seni Berkata 'Tidak'",
+                        icon: "shield", iconColor: "text-red-400",
+                        excerpt: "Kamu tidak harus selalu setuju hanya untuk disukai teman-temanmu.",
+                        content: `Tekanan teman sebaya (peer pressure) sangat nyata di masa remaja. Kamu mungkin diajak bolos, mencoba hal negatif, atau sekadar ikut tren yang sebenarnya tidak kamu suka, hanya demi kata "solidaritas".
+
+Ingatlah, teman yang benar-benar peduli padamu tidak akan memaksamu melewati batas kenyamanan atau prinsipmu. Berkata "tidak" pada hal yang salah adalah bentuk penghormatan tertinggi pada dirimu sendiri.
+
+Awalnya mungkin terasa canggung atau takut dijauhi. Tapi percayalah, mereka yang menjauhimu karena kamu menolak hal negatif, memang bukan teman yang layak dipertahankan.`
+                    },
+                    {
+                        id: "r7",
+                        title: "Menghadapi Patah Hati Pertama",
+                        icon: "cloud-rain", iconColor: "text-blue-300",
+                        excerpt: "Patah hati itu menyakitkan, tapi ia tidak akan menghancurkan masa depanmu.",
+                        content: `Cinta monyet atau patah hati pertama rasanya seperti akhir dunia. Dada terasa sesak, lagu-lagu sedih terasa sangat relate, dan kamu merasa tidak akan pernah bisa menyukai orang lain lagi.
+
+Validasi perasaanmu. Menangislah. Kecewa itu wajar. Namun, ketahuilah bahwa waktu adalah penyembuh yang luar biasa. Sakit hati ini sedang mengajarkanmu tentang apa yang kamu inginkan, apa yang tidak kamu inginkan, dan bagaimana cara menjadi lebih kuat.
+
+Jadikan momen ini untuk kembali fokus pada dirimu. Perbaiki nilai, tekuni hobi, dan nikmati waktu bersama sahabat. Suatu hari nanti, kamu akan melihat ke belakang dan tersenyum menyadari betapa jauhnya kamu telah bertumbuh.`
+                    },
+                    {
+                        id: "r8",
+                        title: "Beban Ekspektasi Orang Tua",
+                        icon: "target", iconColor: "text-emerald-400",
+                        excerpt: "Kamu adalah penulis dari buku kehidupanmu sendiri.",
+                        content: `Seringkali, orang tua memproyeksikan impian mereka yang belum tercapai kepada anak-anaknya. "Kamu harus masuk IPA", "Kamu harus jadi dokter", padahal hatimu berada di seni atau sastra.
+
+Konflik ini berat karena kamu menyayangi mereka dan tidak ingin mengecewakan. Namun, menjalani hidup yang didesain orang lain pada akhirnya akan membuatmu kehilangan jiwamu sendiri.
+
+Cobalah berkomunikasi dengan kepala dingin. Buktikan bahwa pilihanmu bukan sekadar pelarian, tapi sesuatu yang kamu tekuni dengan serius. Berikan hasil. Kadang, orang tua hanya butuh bukti bahwa kamu bisa mandiri dan sukses dengan jalan pilihanmu.`
+                    },
+                    {
+                        id: "r9",
+                        title: "Stop Menunda Pekerjaan",
+                        icon: "clock", iconColor: "text-yellow-400",
+                        excerpt: "Prokrastinasi adalah pencuri waktu terhebat. Kalahkan dengan aturan 5 menit.",
+                        content: `Tugas sekolah menumpuk, tapi kamu malah asyik scroll TikTok selama berjam-jam. Lalu malamnya, kamu panik (Sistem Kebut Semalam) dan stres. Terdengar familiar?
+
+Prokrastinasi seringkali bukan karena malas, tapi karena otakmu menghindari rasa tidak nyaman dari tugas yang terlihat besar dan sulit. Cara terbaik mengalahkannya adalah dengan "Aturan 5 Menit".
+
+Katakan pada dirimu: "Aku hanya akan mengerjakan tugas ini selama 5 menit. Kalau setelah 5 menit aku tidak tahan, aku boleh berhenti." Biasanya, rintangan terberat adalah memulainya. Setelah kamu mulai, momentum akan membawamu menyelesaikannya.`
+                    },
+                    {
+                        id: "r10",
+                        title: "Self-Love: Cintai Keunikanmu",
+                        icon: "smile", iconColor: "text-pink-400",
+                        excerpt: "Berhentilah membenci hal-hal pada dirimu yang tidak bisa kamu ubah.",
+                        content: `Hidung yang kurang mancung, kulit yang tidak seputih artis Korea, atau tubuh yang kurang tinggi. Seringkali kita berdiri di depan cermin dan hanya mencari-cari kekurangan.
+
+Standar kecantikan itu fana dan terus berubah-ubah setiap dekade. Menghabiskan energimu untuk membenci genetikmu adalah pertempuran yang tidak akan pernah kamu menangkan.
+
+Ubahlah fokusmu. Rawatlah tubuhmu karena kamu mencintainya (dengan makan sehat dan olahraga), bukan karena kamu membencinya. Keunikan fisikmu adalah sejarah dan warisan keluargamu. Berjalanlah dengan tegak, karena kepercayaan diri jauh lebih memukau daripada kesempurnaan fisik.`
+                    },
+                    {
+                        id: "r11",
+                        title: "Menghadapi Bullying & Haters",
+                        icon: "shield", iconColor: "text-slate-400",
+                        excerpt: "Orang yang sibuk menjatuhkan orang lain biasanya sedang jatuh dalam hidupnya sendiri.",
+                        content: `Menjadi korban perundungan (bullying) atau mendapat komentar jahat sangatlah melukai mental. Tapi ada satu rahasia besar yang harus kamu tahu: komentar jahat mereka mencerminkan siapa mereka, bukan siapa kamu.
+
+Orang yang bahagia dan memiliki hidup yang berarti tidak punya waktu untuk mengurus atau menyakiti orang lain. Mereka yang mem-bully biasanya memiliki luka batin, rasa tidak aman (insecure), atau masalah di rumahnya.
+
+Jangan balas dendam, karena itu hanya akan membuatmu sama seperti mereka. Laporkan pada pihak berwenang jika sudah kelewatan. Lindungi energimu, dan kelilingi dirimu dengan orang-orang yang mendukungmu.`
+                    },
+                    {
+                        id: "r12",
+                        title: "Jangan Takut Bertanya",
+                        icon: "key", iconColor: "text-amber-400",
+                        excerpt: "Malu bertanya di kelas hanya akan membuatmu tersesat saat ujian.",
+                        content: `Guru selesai menjelaskan, lalu bertanya: "Ada pertanyaan?". Kelas hening. Kamu sebenarnya bingung, tapi takut dibilang bodoh jika mengangkat tangan.
+
+Kenyataannya, kemungkinan besar setengah dari teman sekelasmu juga sama bingungnya, mereka hanya sama-sama takut sepertimu. Bertanya bukanlah tanda kebodohan, melainkan tanda bahwa kamu memperhatikan dan ingin mengerti.
+
+Lawan rasa malu itu. Orang yang berani bertanya mungkin akan terlihat bodoh selama lima menit, tapi orang yang tidak pernah bertanya akan tetap bodoh selamanya.`
+                    },
+                    {
+                        id: "r13",
+                        title: "Menyeimbangkan Sekolah & Bermain",
+                        icon: "battery", iconColor: "text-green-400",
+                        excerpt: "Belajar terus bikin stres, main terus bikin masa depan suram. Cari keseimbangannya.",
+                        content: `Masa remaja bukanlah simulasi robot di mana kamu harus belajar 24 jam sehari. Otakmu butuh istirahat, bersosialisasi, dan bersenang-senang agar bisa berfungsi optimal.
+
+Namun, bermain game atau nongkrong tanpa batas juga akan merusak masa depanmu. Kuncinya adalah 'Work hard, play hard'. Buatlah jadwal yang realistis.
+
+Gunakan teknik Pomodoro saat belajar (25 menit fokus, 5 menit istirahat). Jadikan waktu bermainmu sebagai 'reward' atau hadiah setelah kamu berhasil menyelesaikan tugas sekolahmu. Dengan begitu, kamu bisa main dengan tenang tanpa dihantui rasa bersalah.`
+                    },
+                    {
+                        id: "r14",
+                        title: "Menemukan 'Passion' Tidak Harus Instan",
+                        icon: "activity", iconColor: "text-red-500",
+                        excerpt: "Belum tahu mau jadi apa? Jangan panik, kamu masih dalam tahap eksplorasi.",
+                        content: `Melihat teman seusiamu yang sudah jago main musik, menang olimpiade, atau punya bisnis kecil sering membuatmu bertanya: "Passion-ku apa ya?".
+
+Jangan panik jika di usia belasan kamu belum menemukan panggilan hidupmu. Passion bukanlah sesuatu yang jatuh dari langit, ia ditemukan melalui eksplorasi panjang. 
+
+Cobalah berbagai hal. Ikuti kelas bahasa, pelajari coding dasar, ikut klub teater, atau coba menulis cerpen. Dari mencoba banyak hal, kamu akan menemukan mana yang membuat matamu berbinar dan mana yang membosankan. Teruslah bereksplorasi!`
+                    },
+                    {
+                        id: "r15",
+                        title: "Kesehatan Mental Itu Penting",
+                        icon: "sun", iconColor: "text-yellow-300",
+                        excerpt: "Tidak apa-apa untuk tidak merasa baik-baik saja.",
+                        content: `Terkadang kamu merasa sedih tanpa alasan yang jelas. Merasa lelah padahal tidak melakukan pekerjaan fisik. Merasa hampa. 
+
+Jika kamu merasakan hal ini, jangan diabaikan. Kesehatan mental sama pentingnya dengan kesehatan fisik. Sama seperti kamu butuh obat saat demam, jiwamu juga butuh pertolongan saat sedang terluka atau kelelahan.
+
+Jangan ragu untuk berbicara dengan konselor sekolah, orang tua, atau psikolog jika bebanmu terasa terlalu berat. Mengakui bahwa kamu butuh bantuan adalah langkah paling berani yang bisa dilakukan seseorang.`
+                    }
+                ]
+            },
+            dewasa: {
+                title: "Ruang Dewasa",
+                subtitle: "Berdamai dengan realita dan menemukan makna hidup.",
+                theme: "from-emerald-600 to-teal-900",
+                bgTheme: "bg-neutral-900",
+                articles: [
+                    {
+                        id: "d1",
+                        title: "Menghadapi Quarter-Life Crisis",
+                        icon: "compass", iconColor: "text-emerald-400",
+                        excerpt: "Merasa tersesat di usia 20-an atau 30-an adalah bagian dari proses pendewasaan.",
+                        content: `Tiba-tiba kamu merasa tertinggal. Melihat teman sebaya sudah menikah, punya rumah, atau menduduki posisi manajer, sementara kamu merasa masih jalan di tempat. Selamat datang di Quarter-Life Crisis.
+
+Fase ini memang tidak nyaman. Kecemasan akan masa depan, karier, dan tujuan hidup sering menghantui di malam hari. Namun, ini adalah tanda bahwa kesadaranmu sedang berkembang. Kamu mulai mempertanyakan apa yang benar-benar penting bagimu, bukan sekadar mengikuti ekspektasi masyarakat.
+
+Berhentilah melihat 'highlight reel' (momen terbaik) orang lain di media sosial dan membandingkannya dengan 'behind the scenes' kehidupanmu. Setiap orang bertarung dengan masalahnya masing-masing yang tidak mereka posting. Bernapaslah, ambil langkah kecil setiap harinya, dan percayalah bahwa kamu sedang berada tepat di tempat yang seharusnya untuk belajar.`
+                    },
+                    {
+                        id: "d2",
+                        title: "Seni Melepaskan Kendali",
+                        icon: "coffee", iconColor: "text-amber-500",
+                        excerpt: "Kita menderita karena mencoba mengendalikan apa yang di luar kuasa kita.",
+                        content: `Sebagai orang dewasa, kita sering memikul banyak tanggung jawab dan berusaha mengatur segalanya agar berjalan sempurna. Namun, kenyataan hidup seringkali tidak dapat diprediksi. Pandemi, kehilangan pekerjaan, atau penyakit bisa datang kapan saja.
+
+Stoisisme mengajarkan kita untuk membedakan antara apa yang bisa kita kendalikan (pikiran, tindakan, dan respons kita) dan apa yang tidak bisa kita kendalikan (opini orang lain, masa lalu, dan kejadian eksternal).
+
+Ketika kita belajar melepaskan obsesi untuk mengendalikan segalanya, kita akan menemukan kedamaian yang luar biasa. Lakukan bagianmu sebaik mungkin, lalu ikhlaskan hasilnya. Belajarlah mengalir bersama kehidupan, bukan melawannya.`
+                    },
+                    {
+                        id: "d3",
+                        title: "Burnout: Saat Tubuh Memintamu Berhenti",
+                        icon: "briefcase", iconColor: "text-slate-400",
+                        excerpt: "Istirahat bukanlah kemalasan, melainkan kebutuhan produktivitas jangka panjang.",
+                        content: `Budaya 'hustle' sering membuat kita merasa bersalah jika kita beristirahat. Kita memforsir diri untuk bekerja keras tanpa henti demi karier atau keluarga, hingga akhirnya mencapai titik 'burnout'—kelelahan fisik, mental, dan emosional yang ekstrem.
+
+Tubuh dan pikiranmu bukanlah mesin. Ketika mereka mengirimkan sinyal kelelahan melalui insomnia, mudah marah, atau kehilangan motivasi, dengarkanlah. Mengambil jeda untuk beristirahat bukan berarti kamu lemah atau menyerah.
+
+Istirahat adalah bentuk penghormatan terhadap dirimu sendiri. Mulailah menetapkan batasan yang jelas antara waktu kerja dan waktu pribadi. Cari kembali hobi kecil yang membuatmu tersenyum. Karier itu penting, tapi kesehatan fisik dan mentalmu adalah aset yang paling berharga.`
+                    },
+                    {
+                        id: "d4",
+                        title: "Seni Menikmati Kesendirian",
+                        icon: "book-open", iconColor: "text-purple-400",
+                        excerpt: "Sendiri bukan berarti kesepian. Belajarlah menjadi sahabat terbaik bagi dirimu sendiri.",
+                        content: `Semakin bertambah usia, lingkaran pertemanan cenderung semakin mengecil. Akhir pekan yang dulu dipenuhi dengan jadwal nongkrong, perlahan berganti menjadi momen beres-beres rumah atau sekadar tiduran di kamar. Ini bukan berarti kamu kehilangan pesona sosialmu, ini adalah siklus alami pendewasaan.
+
+Ada perbedaan besar antara 'lonely' (kesepian) dan 'solitude' (kesendirian yang menenangkan). Belajarlah mengubah rasa sepi menjadi momen untuk mengisi ulang energi (recharge). 
+
+Ajak dirimu sendiri pergi ke kedai kopi, baca buku favoritmu, atau sekadar jalan-jalan sore. Ketika kamu sudah merasa utuh dan nyaman dengan dirimu sendiri, kamu tidak akan lagi bergantung pada validasi dari kehadiran orang lain.`
+                    },
+                    {
+                        id: "d5",
+                        title: "Tidak Ada Kata Terlambat",
+                        icon: "star", iconColor: "text-yellow-500",
+                        excerpt: "Merasa salah jalan? Kamu selalu punya hak untuk memutar arah dan memulai yang baru.",
+                        content: `Di usia 20-an akhir atau 30-an, banyak yang tiba-tiba sadar: "Ini bukan hidup yang aku inginkan." Mungkin kamu merasa salah mengambil jurusan kuliah, atau terjebak dalam karier yang menghisap jiwamu. 
+
+Masyarakat sering mendikte bahwa di usia tertentu kita harus sudah 'settle' atau menetap. Padahal, hidup ini bukan perlombaan lari cepat, melainkan maraton panjang dengan rute yang bisa kita ubah. Memilih untuk pindah haluan atau memulai karier baru bukanlah sebuah kegagalan, melainkan bentuk keberanian.
+
+Jangan biarkan waktu yang sudah berlalu menahanmu untuk memperbaiki sisa waktumu di masa depan. Mulailah belajar keahlian baru malam ini, bangun jaringan baru besok. Waktu akan tetap berlalu bagaimanapun juga, lebih baik memanfaatkannya untuk mengejar apa yang benar-benar memanggil jiwamu.`
+                    },
+                    {
+                        id: "d6",
+                        title: "Berhenti Menjadi People Pleaser",
+                        icon: "shield", iconColor: "text-red-500",
+                        excerpt: "Kamu bukan cokelat Nutella, kamu tidak bisa membuat semua orang bahagia.",
+                        content: `Mengiyakan ajakan teman padahal kamu ingin tidur. Mengambil pekerjaan rekan kerja karena sungkan menolak. Menjadi 'people pleaser' mungkin membuatmu disukai, tapi itu akan membunuh batinmu perlahan.
+
+Mengorbankan batasan dirimu demi kenyamanan orang lain adalah bentuk pengkhianatan pada diri sendiri. Orang lain akan terus meminta, selama kamu terus memberi.
+
+Belajarlah berkata "Tidak, maaf aku sedang tidak bisa" tanpa perlu memberikan alasan atau penjelasan yang panjang lebar. Orang yang benar-benar menghargaimu akan mengerti batasanmu. Mereka yang marah ketika kamu menetapkan batas, adalah orang yang selama ini mengambil keuntungan darimu.`
+                    },
+                    {
+                        id: "d7",
+                        title: "Menghadapi Imposter Syndrome",
+                        icon: "star", iconColor: "text-amber-400",
+                        excerpt: "Merasa seperti penipu atas kesuksesanmu sendiri? Kamu tidak sendirian.",
+                        content: `Kamu dipromosikan, lulus dengan nilai memuaskan, atau mendapat klien besar. Tapi bukannya bangga, suara di kepalamu malah berbisik: "Aku cuma beruntung. Sebentar lagi mereka akan tahu kalau aku sebenarnya tidak sepintar itu."
+
+Selamat datang di Imposter Syndrome. Sindrom ini justru paling sering menyerang orang-orang yang kompeten. Kamu merasa seperti penipu karena kamu memiliki standar yang sangat tinggi untuk dirimu sendiri.
+
+Lawan pikiran itu dengan fakta. Tuliskan semua pencapaianmu dan usaha keras yang kamu lakukan untuk mencapainya. Keberuntungan mungkin membuka pintu, tetapi kemampuan dan kerja kerasmulah yang membuatmu tetap berada di dalam ruangan itu. Kamu pantas berada di sana.`
+                    },
+                    {
+                        id: "d8",
+                        title: "Kekuatan Habit Kecil",
+                        icon: "target", iconColor: "text-emerald-500",
+                        excerpt: "Jangan mencoba mengubah hidupmu dalam semalam. Ubahlah 1% setiap hari.",
+                        content: `Di tahun baru, kita sering membuat resolusi besar: "Akan nge-gym 2 jam setiap hari" atau "Baca 1 buku per minggu". Kebanyakan gagal di bulan Februari karena perubahannya terlalu drastis dan menguras energi.
+
+Rahasia perubahan sejati ada pada konsistensi yang membosankan. Alih-alih 2 jam, mulailah dengan push-up 5 menit setiap pagi. Alih-alih satu buku, mulailah dengan membaca 2 halaman sebelum tidur.
+
+Habit kecil (atomic habits) yang diulang terus menerus akan menghasilkan efek bola salju (compound effect). Fokuslah pada membangun identitas ("Saya adalah orang yang rajin olahraga") daripada hasil akhir. 1% lebih baik setiap hari akan membawamu sangat jauh dalam setahun.`
+                    },
+                    {
+                        id: "d9",
+                        title: "Berdamai dengan Kehilangan",
+                        icon: "feather", iconColor: "text-slate-300",
+                        excerpt: "Duka adalah cinta yang tidak tahu harus pergi ke mana.",
+                        content: `Menjadi dewasa berarti kita akan berhadapan dengan perpisahan yang permanen. Kehilangan orang tua, sahabat, atau pasangan hidup adalah luka paling dalam yang bisa dialami manusia.
+
+Tidak ada tenggat waktu untuk berduka. Jangan biarkan orang lain memburumu untuk "segera move on". Menangislah, marahlah, rasakan ruang kosong yang ditinggalkan.
+
+Seiring berjalannya waktu, rasa sakit itu mungkin tidak akan pernah hilang sepenuhnya, tetapi kamu akan tumbuh menjadi lebih kuat dan lebih besar di sekitar rasa sakit tersebut. Kenangan yang dulunya membawa air mata, perlahan akan berubah menjadi senyuman hangat.`
+                    },
+                    {
+                        id: "d10",
+                        title: "Bertahan di Toxic Workplace",
+                        icon: "anchor", iconColor: "text-blue-500",
+                        excerpt: "Gajimu tidak seharusnya dibayar dengan kesehatan mentalmu.",
+                        content: `Bos yang manipulatif, rekan kerja yang saling menjatuhkan, atau jam kerja yang tidak manusiawi. Lingkungan kerja beracun (toxic workplace) bisa mengubah orang yang paling ceria menjadi depresi.
+
+Jika kamu belum bisa resign karena alasan finansial, kamu harus melindungi pikiranmu secara ketat. Bekerjalah sesuai porsinya (act your wage). Jangan bawa pekerjaan atau drama kantor ke rumah. 
+
+Gunakan gajimu dari tempat beracun itu sebagai modal untuk bertahan hidup sambil diam-diam memperbarui CV, mengikuti wawancara di tempat lain, atau membangun usaha sampingan. Jangan jadikan tempat itu pelabuhan terakhirmu.`
+                    },
+                    {
+                        id: "d11",
+                        title: "Tekanan Generasi Sandwich",
+                        icon: "users", iconColor: "text-indigo-400",
+                        excerpt: "Kamu tidak bisa menuangkan air dari teko yang kosong.",
+                        content: `Terjepit di tengah: harus membiayai kebutuhan anak (atau diri sendiri) sambil menanggung hidup orang tua atau adik-adik. Ini adalah realitas keras 'Sandwich Generation'.
+
+Beban finansial dan emosional ini sering membuatmu merasa bersalah jika menggunakan uang untuk kesenangan pribadi. Namun ingat, merawat dirimu sendiri BUKANLAH keegoisan.
+
+Komunikasikan batas kemampuan finansialmu kepada keluarga secara terbuka dan jujur. Kamu tidak diwajibkan menjadi pahlawan yang mengorbankan masa depanmu sendiri. Atur prioritas, sisihkan untuk dana daruratmu dulu, baru bantu orang lain.`
+                    },
+                    {
+                        id: "d12",
+                        title: "Memaafkan Diri Sendiri",
+                        icon: "heart", iconColor: "text-pink-500",
+                        excerpt: "Masa lalu adalah tempat untuk belajar, bukan tempat tinggal.",
+                        content: `Sebagai orang dewasa, kita memiliki tumpukan penyesalan: keputusan finansial yang buruk, menyakiti orang yang kita cintai, atau melepaskan peluang emas. Rasa bersalah ini bisa menggerogoti jiwamu dari dalam.
+
+Tapi coba pikirkan: versi dirimu di masa lalu membuat keputusan terbaik berdasarkan pengetahuan dan kedewasaan yang ia miliki SAAT ITU. 
+
+Menghukum dirimu hari ini untuk kesalahan kemarin tidak akan mengubah masa lalu. Maafkan dirimu. Tatap cermin dan katakan: "Aku membuat kesalahan, tapi aku bukanlah kesalahanku." Gunakan pelajaran pahit itu untuk mengambil keputusan yang lebih bijak hari ini.`
+                    },
+                    {
+                        id: "d13",
+                        title: "Menghadapi Penolakan",
+                        icon: "cloud-rain", iconColor: "text-cyan-400",
+                        excerpt: "Setiap kata 'TIDAK' mendekatkanmu pada satu kata 'YA' yang tepat.",
+                        content: `Ditolak ratusan lamaran kerja, proposal bisnis yang diabaikan, atau cinta yang bertepuk sebelah tangan. Penolakan selalu terasa seperti tamparan di wajah ego kita.
+
+Orang sukses bukanlah mereka yang tidak pernah ditolak, melainkan mereka yang paling tahan banting terhadap penolakan. Jangan ambil penolakan secara personal. Terkadang, perusahaan hanya mencari kualifikasi yang berbeda, bukan berarti kamu tidak kompeten.
+
+Biarkan rasa sakitnya mengendap sejenak, evaluasi apa yang bisa diperbaiki, perbaiki CV-mu, ubah strategimu, dan ketuk pintu berikutnya.`
+                    },
+                    {
+                        id: "d14",
+                        title: "Seni Mengelola Uang & Gengsi",
+                        icon: "key", iconColor: "text-yellow-600",
+                        excerpt: "Kaya beneran adalah ketika kamu tidak punya kebutuhan untuk terlihat kaya.",
+                        content: `Banyak orang dewasa terjebak dalam perlombaan pamer kekayaan. Membeli gadget terbaru dengan cicilan, mobil mewah untuk validasi tetangga, atau nongkrong di tempat mahal yang menguras gaji.
+
+Ketahuilah: orang lain sebenarnya tidak peduli dengan apa yang kamu pakai; mereka hanya peduli pada diri mereka sendiri. Memiskinkan diri demi terlihat kaya di mata orang lain adalah kebodohan finansial.
+
+Mulai bedakan antara 'keinginan' dan 'kebutuhan'. Bangun dana darurat. Berinvestasilah untuk masa tuamu. Kebebasan finansial (tidur nyenyak tanpa memikirkan utang) jauh lebih mewah daripada barang branded apa pun di dunia ini.`
+                    },
+                    {
+                        id: "d15",
+                        title: "Menjaga Api dalam Hubungan",
+                        icon: "activity", iconColor: "text-orange-500",
+                        excerpt: "Cinta bukanlah perasaan yang jatuh dari langit, ia adalah keputusan harian.",
+                        content: `Setelah bertahun-tahun dalam pernikahan atau hubungan jangka panjang, fase 'bulan madu' akan memudar. Digantikan oleh rutinitas membayar tagihan, mengurus rumah, dan kelelahan kerja. Hubungan terasa hambar.
+
+Cinta yang matang tidak lagi bertahan hanya dengan debaran jantung, melainkan komitmen dan usaha yang disengaja. Jangan berhenti melakukan hal-hal kecil yang dulu kamu lakukan saat PDKT.
+
+Luangkan waktu 15 menit setiap malam hanya untuk mendengarkan pasanganmu tanpa gangguan gadget. Jadwalkan 'date night'. Jangan pelit apresiasi. Rumput tetangga tidak lebih hijau, rumput akan hijau di tempat kamu menyiramnya.`
+                    }
+                ]
+            },
+            doa: {
+                title: "Ruang Spiritual",
+                subtitle: "Kumpulan doa lintas agama untuk ketenangan jiwamu.",
+                theme: "from-amber-500 to-red-600",
+                bgTheme: "bg-slate-900",
+                articles: [
+                    {
+                        id: "doa1",
+                        title: "Doa Ketenangan Hati (Islam)",
+                        icon: "moon", iconColor: "text-amber-400",
+                        excerpt: "Memohon kelapangan dada dan kemudahan urusan kepada Allah SWT.",
+                        content: `Dalam Islam, saat hati merasa gelisah dan urusan terasa berat, berserah diri kepada Allah adalah jalan terbaik untuk menemukan kedamaian.
+
+Doa Nabi Musa AS untuk kelapangan hati:
+"Robbis rohlii shodrii, wa yassirlii amrii, wahlul 'uqdatam mil lisaani yafqohu qoulii."
+
+Artinya:
+"Ya Tuhanku, lapangkanlah untukku dadaku, dan mudahkanlah untukku urusanku, dan lepaskanlah kekakuan dari lidahku, supaya mereka mengerti perkataanku." (QS. Thaha: 25-28).
+
+Tarik napas dalam-dalam, bacalah doa ini dengan penuh keyakinan. Percayalah bahwa setelah kesulitan, pasti ada kemudahan.`
+                    },
+                    {
+                        id: "doa2",
+                        title: "Doa Kekuatan (Kristen Protestan)",
+                        icon: "sun", iconColor: "text-yellow-400",
+                        excerpt: "Berseru kepada Bapa di Surga saat beban hidup terasa terlampau berat.",
+                        content: `Terkadang badai kehidupan datang silih berganti. Dalam iman Kristen, kekuatan sejati tidak datang dari diri sendiri, melainkan dari penyertaan Tuhan Yesus Kristus.
+
+Doa Kekuatan:
+"Bapa di Surga yang Mahakasih, hari ini aku datang ke hadapan-Mu dengan hati yang lelah dan beban yang berat. Aku menyadari kelemahanku dan keterbatasanku sebagai manusia.
+
+Tuhan, tolong berikan aku kekuatan baru. Sama seperti janji-Mu bahwa Engkau tidak akan memberikan pencobaan melebihi kekuatan umat-Mu. Biarlah Roh Kudus-Mu menuntun setiap langkahku, memberikan penghiburan di kala sedih, dan keberanian di kala bimbang. Dalam nama Tuhan Yesus Kristus, sang Juru Selamat, aku berdoa. Amin."`
+                    },
+                    {
+                        id: "doa3",
+                        title: "Doa Kedamaian Batin (Katolik)",
+                        icon: "star", iconColor: "text-blue-300",
+                        excerpt: "Menyerahkan segala kekhawatiran ke dalam tangan perlindungan Tuhan.",
+                        content: `Dalam tradisi Katolik, doa adalah cara kita berdialog dari hati ke hati dengan Allah Bapa, memohon rahmat dan kedamaian sejati.
+
+Doa Kedamaian Batin:
+"Allah Bapa yang Maharahim, Engkau mengenal hatiku lebih dari diriku sendiri. Saat ini, pikiranku dipenuhi oleh kekhawatiran dan ketakutan akan masa depan.
+
+Aku serahkan segala pergumulanku ke dalam tangan-Mu yang penuh kasih. Tolong utuslah Roh Kudus-Mu untuk menenangkan badai di dalam batinku. Bunda Maria, doakanlah aku anakmu ini, agar aku selalu memiliki iman yang teguh dan hati yang damai dalam menghadapi setiap ujian hidup. Demi Kristus Tuhan kami. Amin."`
+                    },
+                    {
+                        id: "doa4",
+                        title: "Doa Keselamatan & Kedamaian (Hindu)",
+                        icon: "sun", iconColor: "text-orange-500",
+                        excerpt: "Mengagungkan Sang Hyang Widhi Wasa untuk memohon ketenangan alam semesta.",
+                        content: `Dalam ajaran Hindu, kedamaian batin sangat erat kaitannya dengan keharmonisan antara manusia, alam, dan Tuhan (Tri Hita Karana).
+
+Gayatri Mantram (Mantra memohon pencerahan suci):
+"Om bhur bhuvah svah
+Tat savitur varenyam
+Bhargo devasya dhimahi
+Dhiyo yo nah prachodayat."
+
+Artinya:
+"Ya Sang Hyang Widhi Wasa yang menguasai ketiga loka (Bhur, Bhuwah, Svah). Kami memuja cahaya kemilau dan suci dari-Mu yang menerangi alam semesta. Semoga Engkau memberikan pencerahan kepada pikiran dan budi nurani kami."
+
+Semoga damai di hati, damai di dunia, damai selamanya. Om Shanti, Shanti, Shanti, Om.`
+                    },
+                    {
+                        id: "doa5",
+                        title: "Doa Cinta Kasih (Buddha)",
+                        icon: "heart", iconColor: "text-red-400",
+                        excerpt: "Memancarkan energi Metta (Cinta Kasih) untuk diri sendiri dan semua makhluk.",
+                        content: `Dalam agama Buddha, kedamaian hati dicapai dengan melepaskan kebencian dan memancarkan cinta kasih universal (Metta) kepada seluruh makhluk hidup.
+
+Doa Pemancaran Cinta Kasih:
+"Semoga saya berbahagia, bebas dari penderitaan, bebas dari kebencian, bebas dari kesakitan, bebas dari kesulitan, semoga saya dapat mempertahankan kebahagiaan saya.
+
+Semoga semua makhluk hidup; baik yang tampak maupun yang tidak tampak, yang jauh maupun yang dekat, yang telah lahir maupun yang akan lahir—semoga mereka semua berbahagia.
+
+Sabbe Satta Bhavantu Sukhitatta.
+Semoga semua makhluk hidup berbahagia. Sadhu, Sadhu, Sadhu."`
+                    }
+                ]
+            },
+            orangtua: {
+                title: "Untuk Orang Tua",
+                subtitle: "Kumpulan ucapan dan doa tulus untuk Ayah dan Ibu.",
+                theme: "from-rose-500 to-pink-700",
+                bgTheme: "bg-neutral-900",
+                articles: [
+                    {
+                        id: "ot1",
+                        title: "Terima Kasih, Ibu",
+                        icon: "heart", iconColor: "text-rose-400",
+                        excerpt: "Tidak ada kata yang cukup untuk membalas peluh dan air matamu, Bu.",
+                        content: `Ibu, 
+Terkadang aku gengsi untuk mengatakannya secara langsung, tapi melalui tulisan ini, aku ingin Ibu tahu betapa berharganya Ibu di hidupku.
+
+Terima kasih karena selalu menjadi orang pertama yang bangun di pagi hari, dan orang terakhir yang memejamkan mata di malam hari hanya untuk memastikan kami sekeluarga baik-baik saja. Terima kasih untuk setiap masakan hangat, untuk setiap teguran yang dulu aku benci namun kini aku sadari kebenarannya, dan untuk doa-doa malammu yang diam-diam menjagaku dari jauh.
+
+Aku tahu aku belum menjadi anak yang sempurna, tapi aku berjanji akan berusaha sekuat tenaga untuk membuat Ibu tersenyum bangga di hari tua nanti. Sehat selalu, Ibuku sayang.`
+                    },
+                    {
+                        id: "ot2",
+                        title: "Pahlawan Tanpa Tanda Jasa, Ayah",
+                        icon: "shield", iconColor: "text-blue-500",
+                        excerpt: "Ayah mungkin tidak banyak bicara, tapi keringatnya berbicara tentang cinta.",
+                        content: `Ayah,
+Sosokmu mungkin tidak selembut Ibu, dan kata-katamu mungkin jarang berisi pujian bermanis-manis. Namun seiring aku dewasa, aku mulai mengerti bahasa cintamu.
+
+Cintamu ada pada sepatu tuamu yang tidak pernah kau ganti agar aku bisa membeli buku baru. Cintamu ada pada bahumu yang menegang menahan lelah setelah seharian bekerja keras mencari nafkah. Cintamu ada pada ketegasanmu yang mengajariku untuk menjadi manusia yang kuat dan pantang menyerah.
+
+Terima kasih, Ayah, karena telah menjadi punggung terkuat tempat keluarga kita bersandar. Maafkan aku jika sering salah paham dengan cara Ayah mendidikku. Aku sangat menyayangimu, Yah.`
+                    },
+                    {
+                        id: "ot3",
+                        title: "Permintaan Maaf Seorang Anak",
+                        icon: "cloud-rain", iconColor: "text-slate-400",
+                        excerpt: "Maafkan anakmu yang seringkali keras kepala dan lupa waktu.",
+                        content: `Ayah, Ibu...
+Maafkan aku. Maafkan anakmu ini yang seringkali terlalu sibuk dengan dunia luar, dengan teman-teman, dengan pekerjaan, hingga lupa bahwa ada dua orang di rumah yang selalu menunggu kabarku.
+
+Maafkan aku yang kadang menjawab dengan nada tinggi saat lelah. Maafkan aku yang baru mengingat kalian saat aku sedang terjatuh atau butuh bantuan. Padahal, kalian tidak pernah menetapkan syarat apa pun untuk mencintaiku.
+
+Semakin aku dewasa, semakin aku menyadari betapa waktu berlalu begitu cepat. Uban di rambut dan kerutan di wajah kalian menyadarkanku bahwa aku harus lebih banyak meluangkan waktu. Semoga Tuhan memberiku kesempatan untuk membahagiakan kalian selagi kalian masih ada di dunia ini.`
+                    },
+                    {
+                        id: "ot4",
+                        title: "Doa Keselamatan untuk Orang Tua",
+                        icon: "star", iconColor: "text-yellow-400",
+                        excerpt: "Tuhan, jagalah mereka sebagaimana mereka menjagaku sewaktu kecil.",
+                        content: `Ya Tuhan Yang Maha Pengasih dan Maha Penyayang,
+Hari ini aku menengadahkan tangan, bukan untuk meminta harta atau kekayaan, melainkan untuk memohon keselamatan dan kebahagiaan bagi kedua orang tuaku.
+
+Tuhan, ampunilah dosa-dosaku dan dosa kedua orang tuaku. Sayangilah mereka sebagaimana mereka menyayangiku, mendidikku, dan merawatku semenjak aku kecil dengan penuh kesabaran. 
+
+Berikanlah mereka kesehatan, jauhkanlah mereka dari penyakit dan marabahaya. Jadikanlah sisa umur mereka penuh dengan keberkahan dan kedamaian. Dan jika suatu hari nanti Engkau memanggil mereka pulang, tempatkanlah mereka di tempat yang paling mulia di sisi-Mu. Amin.`
+                    }
+                ]
+            }
+        };
+
+        // --- DATA KUTIPAN HARIAN ---
+        window.dailyQuotes = [
+            "Setiap pagi kita lahir kembali. Apa yang kita lakukan hari ini adalah yang paling penting.",
+            "Tidak peduli seberapa lambat kamu berjalan, asalkan kamu tidak pernah berhenti.",
+            "Bintang tidak bisa bersinar tanpa adanya kegelapan. Jangan takut pada masa-masa sulit.",
+            "Masa depan adalah milik mereka yang percaya pada keindahan mimpi-mimpi mereka.",
+            "Terkadang, langkah terkecil ke arah yang benar akhirnya menjadi langkah terbesar dalam hidupmu.",
+            "Jangan menunggu waktu yang tepat. Ciptakan waktu yang tepat itu sendiri.",
+            "Kesulitan seringkali mempersiapkan orang biasa untuk takdir yang luar biasa.",
+            "Bukan beban yang menghancurkanmu, melainkan caramu memikulnya.",
+            "Satu-satunya batasan untuk meraih impian besok adalah keragu-raguan kita hari ini.",
+            "Kesuksesan bukanlah akhir, kegagalan bukan hal fatal: keberanian untuk melanjutkanlah yang penting.",
+            "Kekuatan tidak datang dari apa yang bisa kamu lakukan. Ia datang dari mengatasi hal-hal yang dulu kamu pikir tidak bisa kamu lakukan.",
+            "Jangan takut melepaskan yang baik untuk pergi ke yang luar biasa.",
+            "Cara memulai adalah berhenti berbicara dan mulai melakukan.",
+            "Pemandangan terbaik datang setelah pendakian yang paling sulit.",
+            "Waktumu terbatas, jangan sia-siakan dengan menjalani hidup orang lain."
+        ];
+
+        // --- STATE APLIKASI ---
+        window.currentView = 'home'; 
+        window.selectedCategory = null; 
+        window.selectedArticle = null;
+        window.suggestionsList = [];
+
+        // --- LOGIKA ACAK SETIAP DIBUKA (KONEKSI INTERNET) ---
+        // Menggunakan random yang di-generate setiap kali halaman direfresh/dibuka
+        if (!window.sessionIndex) {
+            window.sessionIndex = Math.floor(Math.random() * 10000);
+        }
+
+        // --- FUNGSI NAVIGASI ---
+        window.goToCategory = function(category) {
+            window.selectedCategory = category;
+            window.currentView = 'category';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            window.renderApp();
+        };
+
+        window.goToArticle = function(articleId) {
+            const data = window.motivationalData[window.selectedCategory];
+            window.selectedArticle = data.articles.find(a => a.id === articleId);
+            window.currentView = 'article';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            window.renderApp();
+        };
+
+        window.goToSaran = function() {
+            window.currentView = 'saran';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            window.renderApp();
+        };
+
+        window.goBack = function() {
+            if (window.currentView === 'article') {
+                window.currentView = 'category';
+                window.selectedArticle = null;
+            } else if (window.currentView === 'category' || window.currentView === 'saran') {
+                window.currentView = 'home';
+                window.selectedCategory = null;
+            }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            window.renderApp();
+        };
+
+        // Fungsi sementara (sebelum Firebase termuat penuh)
+        window.submitSuggestion = function(event) {
+            event.preventDefault();
+            alert("Sistem sedang memuat koneksi, mohon tunggu beberapa saat lalu coba lagi.");
+        };
+
+        // --- FUNGSI RENDER VIEW ---
+        function getHomeHTML() {
+            const quoteOfTheDay = window.dailyQuotes[window.sessionIndex % window.dailyQuotes.length];
+            return `
+                <div class="min-h-[100dvh] w-full bg-black text-white p-3 sm:p-6 flex flex-col items-center justify-center relative overflow-hidden pb-8 sm:pb-10">
+                    
+                    <!-- Background decoration -->
+                    <div class="absolute top-[-5%] left-[-10%] w-60 h-60 sm:w-96 sm:h-96 bg-purple-900 rounded-full mix-blend-multiply filter blur-3xl opacity-40 animate-pulse"></div>
+                    <div class="absolute bottom-[-5%] right-[-10%] w-60 h-60 sm:w-96 sm:h-96 bg-emerald-900 rounded-full mix-blend-multiply filter blur-3xl opacity-40 animate-pulse delay-1000"></div>
+
+                    <div class="z-10 text-center max-w-xl w-full">
+                        <div class="relative mx-auto mb-3 sm:mb-6 w-24 h-24 sm:w-36 sm:h-36 group">
+                            <div class="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full blur-xl opacity-40 group-hover:opacity-70 transition-opacity duration-500"></div>
+                            
+                            <!-- LOGO CAHAYAJIWA -->
+                            <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg" class="relative z-10 w-full h-full drop-shadow-2xl animate-float">
+                                <defs>
+                                    <linearGradient id="lotusGradient" x1="0%" y1="100%" x2="100%" y2="0%">
+                                        <stop offset="0%" stop-color="#8B5CF6"/> <!-- Violet -->
+                                        <stop offset="100%" stop-color="#EC4899"/> <!-- Pink -->
+                                    </linearGradient>
+                                    <linearGradient id="lightGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                        <stop offset="0%" stop-color="#FDE047"/> <!-- Yellow -->
+                                        <stop offset="100%" stop-color="#F97316"/> <!-- Orange -->
+                                    </linearGradient>
+                                    <filter id="glowEffect">
+                                        <feGaussianBlur stdDeviation="6" result="coloredBlur"/>
+                                        <feMerge>
+                                            <feMergeNode in="coloredBlur"/>
+                                            <feMergeNode in="SourceGraphic"/>
+                                        </feMerge>
+                                    </filter>
+                                </defs>
+                                
+                                <circle cx="100" cy="100" r="85" stroke="url(#lotusGradient)" stroke-width="2" stroke-dasharray="6 12" opacity="0.6" style="animation: spin 20s linear infinite; transform-origin: center;" />
+                                <path d="M100 170 C 50 170 20 100 100 30 C 180 100 150 170 100 170 Z" fill="url(#lotusGradient)" opacity="0.75" />
+                                <path d="M100 160 C 40 120 40 70 100 50 C 160 70 160 120 100 160 Z" fill="url(#lotusGradient)" opacity="0.9" />
+                                <circle cx="100" cy="115" r="22" fill="url(#lightGradient)" filter="url(#glowEffect)" class="animate-pulse" />
+                                <path d="M100 75 L104 90 L118 94 L104 98 L100 113 L96 98 L82 94 L96 90 Z" fill="#FFFFFF" filter="url(#glowEffect)"/>
+                            </svg>
+
+                        </div>
+                        <h1 class="text-2xl sm:text-4xl md:text-5xl font-extrabold tracking-tight mb-2 sm:mb-4">
+                            Cahaya<span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500">Jiwa</span>
+                        </h1>
+                        <p class="text-slate-400 text-sm sm:text-lg mb-6 sm:mb-8 px-2">
+                            Temukan perspektif baru. Pilih ruang yang sesuai dengan fase hidupmu.
+                        </p>
+
+                        <!-- KUTIPAN ACAK SAAT DIBUKA -->
+                        <div class="mb-6 sm:mb-10 relative p-[1px] rounded-2xl bg-gradient-to-r from-yellow-500/50 via-orange-500/50 to-pink-500/50 shadow-lg shadow-orange-900/20 mx-1 sm:mx-0">
+                            <div class="bg-black/80 backdrop-blur-md rounded-2xl p-4 sm:p-6 relative overflow-hidden">
+                                <i data-feather="message-square" class="absolute top-2 left-2 w-10 h-10 sm:w-16 sm:h-16 text-white/5 rotate-180"></i>
+                                <h3 class="text-[10px] sm:text-xs font-bold uppercase tracking-widest text-orange-400 mb-2 sm:mb-3 flex items-center justify-center">
+                                    <i data-feather="sun" class="w-3 h-3 sm:w-4 sm:h-4 mr-2"></i> Motivasi Saat Ini
+                                </h3>
+                                <p class="text-sm sm:text-lg md:text-xl font-medium text-slate-200 italic relative z-10 leading-snug">
+                                    "${quoteOfTheDay}"
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- 4 GRID MENU -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-6 w-full px-1 sm:px-0">
+                            
+                            <!-- Card Remaja -->
+                            <button onclick="window.goToCategory('remaja')" class="group relative p-[1px] sm:p-1 rounded-2xl bg-gradient-to-br from-blue-500 to-purple-600 active:scale-[0.98] sm:hover:scale-105 transition-transform duration-300 shadow-lg shadow-purple-900/30 text-left w-full block">
+                                <div class="bg-slate-900/90 backdrop-blur-sm rounded-xl p-4 sm:p-6 h-full flex flex-col justify-between">
+                                    <div>
+                                        <i data-feather="book-open" class="w-6 h-6 sm:w-8 sm:h-8 text-blue-400 mb-2 sm:mb-4"></i>
+                                        <h2 class="text-lg sm:text-2xl font-bold text-white mb-1 sm:mb-2">Untuk Remaja</h2>
+                                        <p class="text-slate-400 text-[11px] sm:text-sm leading-tight">Menemukan jati diri, pertemanan, & sekolah.</p>
+                                    </div>
+                                    <div class="mt-4 sm:mt-6 flex justify-end">
+                                        <i data-feather="chevron-right" class="text-purple-400 group-hover:translate-x-2 transition-transform w-5 h-5 sm:w-6 sm:h-6"></i>
+                                    </div>
+                                </div>
+                            </button>
+
+                            <!-- Card Dewasa -->
+                            <button onclick="window.goToCategory('dewasa')" class="group relative p-[1px] sm:p-1 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-800 active:scale-[0.98] sm:hover:scale-105 transition-transform duration-300 shadow-lg shadow-teal-900/30 text-left w-full block">
+                                <div class="bg-neutral-900/90 backdrop-blur-sm rounded-xl p-4 sm:p-6 h-full flex flex-col justify-between">
+                                    <div>
+                                        <i data-feather="coffee" class="w-6 h-6 sm:w-8 sm:h-8 text-emerald-400 mb-2 sm:mb-4"></i>
+                                        <h2 class="text-lg sm:text-2xl font-bold text-white mb-1 sm:mb-2">Untuk Dewasa</h2>
+                                        <p class="text-slate-400 text-[11px] sm:text-sm leading-tight">Karier, kedamaian batin & tanggung jawab.</p>
+                                    </div>
+                                    <div class="mt-4 sm:mt-6 flex justify-end">
+                                        <i data-feather="chevron-right" class="text-emerald-400 group-hover:translate-x-2 transition-transform w-5 h-5 sm:w-6 sm:h-6"></i>
+                                    </div>
+                                </div>
+                            </button>
+
+                            <!-- Card Doa & Spiritual -->
+                            <button onclick="window.goToCategory('doa')" class="group relative p-[1px] sm:p-1 rounded-2xl bg-gradient-to-br from-amber-500 to-red-600 active:scale-[0.98] sm:hover:scale-105 transition-transform duration-300 shadow-lg shadow-red-900/30 text-left w-full block">
+                                <div class="bg-slate-900/90 backdrop-blur-sm rounded-xl p-4 sm:p-6 h-full flex flex-col justify-between">
+                                    <div>
+                                        <i data-feather="sun" class="w-6 h-6 sm:w-8 sm:h-8 text-amber-400 mb-2 sm:mb-4"></i>
+                                        <h2 class="text-lg sm:text-2xl font-bold text-white mb-1 sm:mb-2">Ruang Spiritual</h2>
+                                        <p class="text-slate-400 text-[11px] sm:text-sm leading-tight">Kumpulan doa lintas agama untuk ketenangan batin.</p>
+                                    </div>
+                                    <div class="mt-4 sm:mt-6 flex justify-end">
+                                        <i data-feather="chevron-right" class="text-amber-400 group-hover:translate-x-2 transition-transform w-5 h-5 sm:w-6 sm:h-6"></i>
+                                    </div>
+                                </div>
+                            </button>
+
+                            <!-- Card Orang Tua -->
+                            <button onclick="window.goToCategory('orangtua')" class="group relative p-[1px] sm:p-1 rounded-2xl bg-gradient-to-br from-rose-500 to-pink-700 active:scale-[0.98] sm:hover:scale-105 transition-transform duration-300 shadow-lg shadow-pink-900/30 text-left w-full block">
+                                <div class="bg-neutral-900/90 backdrop-blur-sm rounded-xl p-4 sm:p-6 h-full flex flex-col justify-between">
+                                    <div>
+                                        <i data-feather="users" class="w-6 h-6 sm:w-8 sm:h-8 text-rose-400 mb-2 sm:mb-4"></i>
+                                        <h2 class="text-lg sm:text-2xl font-bold text-white mb-1 sm:mb-2">Untuk Orang Tua</h2>
+                                        <p class="text-slate-400 text-[11px] sm:text-sm leading-tight">Ucapan syukur dan doa tulus untuk Ayah dan Ibu.</p>
+                                    </div>
+                                    <div class="mt-4 sm:mt-6 flex justify-end">
+                                        <i data-feather="chevron-right" class="text-rose-400 group-hover:translate-x-2 transition-transform w-5 h-5 sm:w-6 sm:h-6"></i>
+                                    </div>
+                                </div>
+                            </button>
+
+                        </div>
+
+                        <!-- TOMBOL SARAN -->
+                        <div class="px-1 sm:px-0">
+                            <button onclick="window.goToSaran()" class="w-full mt-6 sm:mt-8 flex items-center justify-center p-3 sm:p-4 rounded-xl sm:rounded-2xl bg-white/5 border border-white/10 active:scale-[0.98] sm:hover:bg-white/10 transition-all text-slate-300 group shadow-lg">
+                                <i data-feather="message-circle" class="w-4 h-4 sm:w-5 sm:h-5 mr-2 sm:mr-3 text-pink-400 group-hover:scale-110 transition-transform"></i>
+                                <span class="font-semibold text-xs sm:text-base tracking-wide">Tinggalkan Saran untuk Aplikasi</span>
+                            </button>
+                        </div>
+
+                        <!-- FOOTER CREDIT -->
+                        <div class="mt-8 sm:mt-16 pt-5 sm:pt-6 border-t border-white/10 text-center text-slate-400 text-[10px] sm:text-xs space-y-1 pb-2">
+                            <p class="font-semibold tracking-wider text-slate-300 mb-1.5 sm:mb-3">KODE APLIKASI: CJ-001 • VERSI 1.0.0</p>
+                            <p class="text-slate-500 text-[9px] sm:text-xs">Dikembangkan Oleh:</p>
+                            <p class="font-bold text-white text-xs sm:text-base tracking-wide">AYU LESTARI</p>
+                            <p class="text-slate-400 text-[9px] sm:text-xs">Guru Bahasa Indonesia - SMP Negeri 6 Manokwari</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function getCategoryHTML() {
+            const data = window.motivationalData[window.selectedCategory];
+            
+            // Logika Acak Dinamis untuk Sorotan (Berdasarkan load session)
+            const featuredIndex = window.sessionIndex % data.articles.length;
+            const featuredArticle = data.articles[featuredIndex];
+            const otherArticles = data.articles.filter((_, index) => index !== featuredIndex);
+
+            let otherArticlesHTML = otherArticles.map(article => `
+                <button onclick="window.goToArticle('${article.id}')" class="w-full bg-white/5 border border-white/10 active:bg-white/10 active:scale-[0.98] sm:hover:bg-white/10 rounded-xl sm:rounded-2xl p-3 sm:p-5 flex items-start text-left transition-all sm:hover:-translate-y-1 sm:hover:shadow-xl group block">
+                    <div class="bg-black/30 p-2 sm:p-3 rounded-lg sm:rounded-xl mr-3 sm:mr-4 flex-shrink-0 mt-0.5 sm:mt-0">
+                        <i data-feather="${article.icon}" class="w-4 h-4 sm:w-6 sm:h-6 ${article.iconColor}"></i>
+                    </div>
+                    <div class="flex-grow">
+                        <h3 class="text-base sm:text-xl font-bold mb-1 text-slate-100 sm:group-hover:text-transparent sm:group-hover:bg-clip-text sm:group-hover:bg-gradient-to-r sm:group-hover:from-white sm:group-hover:to-slate-400 transition-all leading-tight">
+                            ${article.title}
+                        </h3>
+                        <p class="text-slate-400 text-[11px] sm:text-sm leading-relaxed line-clamp-2">
+                            ${article.excerpt}
+                        </p>
+                    </div>
+                </button>
+            `).join('');
+
+            return `
+                <div class="min-h-[100dvh] ${data.bgTheme} text-white transition-colors duration-500 pb-8 sm:pb-10">
+                    <!-- Header -->
+                    <header class="bg-gradient-to-r ${data.theme} px-4 pt-5 pb-8 sm:p-6 sm:pb-12 rounded-b-[24px] sm:rounded-b-[40px] shadow-xl sm:shadow-2xl">
+                        <div class="max-w-2xl mx-auto">
+                            <button onclick="window.goBack()" class="flex items-center text-white/90 active:text-white active:scale-95 py-2 pr-4 -ml-2 mb-4 sm:mb-8 transition-all group text-sm sm:text-base">
+                                <i data-feather="arrow-left" class="w-4 h-4 sm:w-5 sm:h-5 mr-2 sm:group-hover:-translate-x-1 transition-transform"></i> 
+                                Kembali
+                            </button>
+                            <h1 class="text-2xl sm:text-4xl font-extrabold mb-1 sm:mb-2 leading-tight">${data.title}</h1>
+                            <p class="text-white/80 text-xs sm:text-lg">${data.subtitle}</p>
+                        </div>
+                    </header>
+
+                    <!-- List Articles -->
+                    <main class="max-w-2xl mx-auto px-4 sm:px-6 -mt-5 sm:-mt-8">
+                        <!-- SOROTAN HARI INI -->
+                        <div class="mb-6 sm:mb-10">
+                            <h2 class="text-[10px] sm:text-sm font-bold uppercase tracking-widest text-white/70 mb-2 sm:mb-3 flex items-center ml-1">
+                                <i data-feather="star" class="w-3 h-3 sm:w-4 sm:h-4 mr-1.5 sm:mr-2 text-yellow-400 fill-yellow-400"></i> Sorotan Saat Ini
+                            </h2>
+                            <button onclick="window.goToArticle('${featuredArticle.id}')" class="w-full relative p-[1px] sm:p-[2px] rounded-xl sm:rounded-2xl bg-gradient-to-br ${data.theme} active:scale-[0.98] sm:hover:scale-[1.02] transition-transform duration-300 shadow-lg sm:shadow-xl text-left group block">
+                                <div class="bg-black/60 backdrop-blur-md rounded-[11px] sm:rounded-[14px] p-4 sm:p-6 flex flex-col sm:flex-row items-start sm:items-center">
+                                    <div class="bg-white/20 p-2.5 sm:p-4 rounded-lg sm:rounded-xl mb-3 sm:mb-0 sm:mr-5 flex-shrink-0">
+                                        <i data-feather="${featuredArticle.icon}" class="w-5 h-5 sm:w-8 sm:h-8 ${featuredArticle.iconColor}"></i>
+                                    </div>
+                                    <div class="flex-grow">
+                                        <h3 class="text-lg sm:text-2xl font-bold mb-1 sm:mb-2 text-white sm:group-hover:text-transparent sm:group-hover:bg-clip-text sm:group-hover:bg-gradient-to-r sm:group-hover:from-white sm:group-hover:to-slate-300 transition-all leading-snug">
+                                            ${featuredArticle.title}
+                                        </h3>
+                                        <p class="text-white/80 text-[11px] sm:text-sm leading-relaxed line-clamp-2 sm:line-clamp-none">
+                                            ${featuredArticle.excerpt}
+                                        </p>
+                                    </div>
+                                </div>
+                            </button>
+                        </div>
+
+                        <!-- BACAAN LAINNYA -->
+                        <h2 class="text-[10px] sm:text-sm font-bold uppercase tracking-widest text-white/60 mb-2 sm:mb-3 ml-1">Bacaan Lainnya</h2>
+                        <div class="space-y-2.5 sm:space-y-4">
+                            ${otherArticlesHTML}
+                        </div>
+                    </main>
+                </div>
+            `;
+        }
+
+        function getArticleHTML() {
+            const themeData = window.motivationalData[window.selectedCategory];
+            const formattedContent = window.selectedArticle.content.replace(/\n/g, '<br>');
+            
+            return `
+                <div class="min-h-[100dvh] ${themeData.bgTheme} text-slate-200 pb-8 sm:pb-20">
+                    <div class="max-w-2xl mx-auto px-4 sm:px-6 pt-3 sm:pt-6">
+                        <button onclick="window.goBack()" class="flex items-center text-slate-400 active:text-white active:scale-95 py-2 pr-4 -ml-2 mb-4 sm:mb-8 transition-all group text-sm sm:text-base">
+                            <i data-feather="arrow-left" class="w-4 h-4 sm:w-5 h-5 mr-2 sm:group-hover:-translate-x-1 transition-transform"></i> 
+                            Kembali
+                        </button>
+
+                        <article class="animate-fade-in-up">
+                            <div class="flex items-center mb-3 sm:mb-6">
+                                <div class="bg-white/10 p-1.5 sm:p-3 rounded-lg sm:rounded-xl mr-2.5 sm:mr-4">
+                                    <i data-feather="${window.selectedArticle.icon}" class="w-4 h-4 sm:w-6 sm:h-6 ${window.selectedArticle.iconColor}"></i>
+                                </div>
+                                <span class="text-[9px] sm:text-xs font-bold uppercase tracking-wider text-transparent bg-clip-text bg-gradient-to-r ${themeData.theme}">
+                                    Bacaan ${window.selectedCategory}
+                                </span>
+                            </div>
+                            
+                            <h1 class="text-xl sm:text-3xl md:text-4xl font-extrabold text-white mb-4 sm:mb-8 leading-snug">
+                                ${window.selectedArticle.title}
+                            </h1>
+                            
+                            <div class="text-sm sm:text-lg text-slate-300 leading-relaxed space-y-3 sm:space-y-6">
+                                ${formattedContent}
+                            </div>
+                        </article>
+
+                        <!-- Footer of article -->
+                        <div class="mt-8 sm:mt-16 pt-5 sm:pt-8 border-t border-white/10 flex justify-center pb-4 sm:pb-6">
+                            <button onclick="window.goBack()" class="w-full sm:w-auto px-8 py-2.5 sm:py-3 rounded-xl sm:rounded-full bg-gradient-to-r ${themeData.theme} text-white font-bold text-sm sm:text-base active:scale-95 transition-all shadow-lg shadow-black/50">
+                                Selesai Membaca
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        window.getSaranHTML = function() {
+            // Meloop data saran yang didapat dari Database Cloud
+            const suggestionsHTML = window.suggestionsList.map(s => `
+                <div class="bg-white/5 border border-white/10 rounded-xl sm:rounded-2xl p-3 sm:p-5 flex flex-col gap-1.5 sm:gap-2 shadow-sm animate-fade-in-up">
+                    <p class="text-slate-200 text-xs sm:text-base italic leading-relaxed">"${s.text}"</p>
+                    <div class="flex items-center text-[10px] sm:text-xs text-slate-400 mt-1.5 sm:mt-2">
+                        <i data-feather="user" class="w-3 h-3 mr-1"></i> <span class="font-semibold text-slate-300 mr-3 sm:mr-4">${s.name}</span>
+                        <i data-feather="map-pin" class="w-3 h-3 mr-1 text-purple-400"></i> <span>${s.address}</span>
+                    </div>
+                </div>
+            `).join('') || '<div class="text-center py-8 sm:py-10 opacity-50"><i data-feather="inbox" class="w-8 h-8 sm:w-10 sm:h-10 mx-auto mb-2 sm:mb-3"></i><p class="text-xs sm:text-sm">Belum ada saran. Jadilah yang pertama!</p></div>';
+
+            return `
+                <div class="min-h-[100dvh] w-full bg-neutral-900 text-white p-4 sm:p-6 pb-8 sm:pb-10">
+                    <div class="max-w-2xl mx-auto">
+                        <button onclick="window.goBack()" class="flex items-center text-slate-400 active:text-white active:scale-95 py-2 pr-4 -ml-2 mb-4 sm:mb-6 transition-all group text-sm sm:text-base">
+                            <i data-feather="arrow-left" class="w-4 h-4 sm:w-5 sm:h-5 mr-2 sm:group-hover:-translate-x-1 transition-transform"></i>
+                            Kembali
+                        </button>
+
+                        <div class="mb-5 sm:mb-8">
+                            <h1 class="text-2xl sm:text-4xl font-extrabold mb-1 sm:mb-2 text-transparent bg-clip-text bg-gradient-to-r from-pink-400 to-purple-500">Kotak Saran</h1>
+                            <p class="text-slate-400 text-xs sm:text-base">Kirimkan masukan untuk aplikasi ini. Saran Anda dapat dibaca oleh semua orang.</p>
+                        </div>
+
+                        <form id="saranForm" onsubmit="window.submitSuggestion(event)" class="bg-black/60 backdrop-blur-md rounded-xl sm:rounded-2xl p-4 sm:p-6 border border-white/10 mb-8 sm:mb-10 shadow-xl sm:shadow-2xl">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 mb-3 sm:mb-4">
+                                <div>
+                                    <label class="block text-[9px] sm:text-xs font-bold uppercase tracking-wider text-slate-400 mb-1.5 sm:mb-2">Nama Anda</label>
+                                    <input type="text" id="saranName" required class="w-full bg-white/5 border border-white/10 rounded-lg sm:rounded-xl px-3 sm:px-4 py-2 sm:py-3 text-xs sm:text-sm text-white focus:outline-none focus:border-purple-500 transition-colors" placeholder="Cth: Budi / Siswa">
+                                </div>
+                                <div>
+                                    <label class="block text-[9px] sm:text-xs font-bold uppercase tracking-wider text-slate-400 mb-1.5 sm:mb-2">Asal / Alamat</label>
+                                    <input type="text" id="saranAddress" required class="w-full bg-white/5 border border-white/10 rounded-lg sm:rounded-xl px-3 sm:px-4 py-2 sm:py-3 text-xs sm:text-sm text-white focus:outline-none focus:border-purple-500 transition-colors" placeholder="Cth: Manokwari">
+                                </div>
+                            </div>
+                            <div class="mb-4 sm:mb-6">
+                                <label class="block text-[9px] sm:text-xs font-bold uppercase tracking-wider text-slate-400 mb-1.5 sm:mb-2">Isi Saran / Pesan</label>
+                                <textarea id="saranText" required rows="3" class="w-full bg-white/5 border border-white/10 rounded-lg sm:rounded-xl px-3 sm:px-4 py-2 sm:py-3 text-xs sm:text-sm text-white focus:outline-none focus:border-purple-500 transition-colors resize-none" placeholder="Tulis masukan di sini..."></textarea>
+                            </div>
+                            
+                            <div id="saranStatus" class="hidden mb-3 sm:mb-4 p-2 sm:p-3 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 text-[10px] sm:text-xs text-center flex items-center justify-center">
+                                <i data-feather="check-circle" class="w-3 h-3 sm:w-4 sm:h-4 mr-1.5 sm:mr-2"></i> Terima kasih! Saran berhasil dikirim.
+                            </div>
+
+                            <button type="submit" id="saranSubmitBtn" class="w-full py-2.5 sm:py-3.5 rounded-lg sm:rounded-xl bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white font-bold text-xs sm:text-sm active:scale-95 transition-all shadow-lg shadow-purple-900/40">
+                                Kirim Saran
+                            </button>
+                        </form>
+
+                        <h2 class="text-[11px] sm:text-sm font-bold uppercase tracking-widest text-slate-500 mb-3 sm:mb-4 border-b border-white/10 pb-2 sm:pb-3 flex items-center">
+                            <i data-feather="users" class="w-3 h-3 sm:w-4 sm:h-4 mr-1.5 sm:mr-2"></i> Saran Pengguna Lain
+                        </h2>
+                        
+                        <div class="space-y-3 sm:space-y-4">
+                            ${window.suggestionsHTML ? window.suggestionsHTML : suggestionsHTML}
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // --- RENDER UTAMA ---
+        window.renderApp = function() {
+            const appContainer = document.getElementById('app');
+            
+            if (window.currentView === 'home') {
+                appContainer.innerHTML = getHomeHTML();
+            } else if (window.currentView === 'category') {
+                appContainer.innerHTML = getCategoryHTML();
+            } else if (window.currentView === 'article') {
+                appContainer.innerHTML = getArticleHTML();
+            } else if (window.currentView === 'saran') {
+                appContainer.innerHTML = window.getSaranHTML();
+            }
+            
+            if(typeof feather !== 'undefined') {
+                feather.replace();
+            }
+        }
+
+        // Jalankan render PERTAMA KALI SECARA INSTAN!
+        window.renderApp();
+    </script>
+
+    <!-- SCRIPT 2: FIREBASE & KONEKSI AWAN -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, onAuthStateChanged, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, collection, addDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // --- FIREBASE SETUP ---
+        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {};
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+
+        let currentUser = null;
+
+        const initAuth = async () => {
+            if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                await signInWithCustomToken(auth, __initial_auth_token);
+            } else {
+                await signInAnonymously(auth);
+            }
+        };
+        initAuth();
+
+        onAuthStateChanged(auth, (user) => {
+            currentUser = user;
+            if (user) {
+                // 1. MENDENGARKAN DATABASE SARAN
+                const suggestionsRef = collection(db, 'artifacts', appId, 'public', 'data', 'suggestions');
+                onSnapshot(suggestionsRef, (snapshot) => {
+                    window.suggestionsList = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                    window.suggestionsList.sort((a, b) => b.timestamp - a.timestamp);
+                    if (window.currentView === 'saran') {
+                        window.renderApp();
+                    }
+                }, (error) => console.error("Gagal mengambil saran:", error));
+
+                // 2. MENDENGARKAN ARTIKEL BARU DARI CLOUD (SINKRONISASI INTERNET)
+                const articlesRef = collection(db, 'artifacts', appId, 'public', 'data', 'articles');
+                onSnapshot(articlesRef, (snapshot) => {
+                    snapshot.docChanges().forEach((change) => {
+                        if (change.type === "added") {
+                            const data = change.doc.data();
+                            const cat = data.category; // contoh: 'remaja', 'dewasa'
+                            if(window.motivationalData[cat]) {
+                                // Mencegah artikel ganda
+                                if(!window.motivationalData[cat].articles.find(a => a.id === change.doc.id)) {
+                                    window.motivationalData[cat].articles.push({
+                                        id: change.doc.id,
+                                        title: data.title,
+                                        icon: data.icon || "star",
+                                        iconColor: data.iconColor || "text-white",
+                                        excerpt: data.excerpt,
+                                        content: data.content
+                                    });
+                                    // Refresh tampilan jika ada di dalam kategori terkait
+                                    if(window.currentView === 'category' && window.selectedCategory === cat) {
+                                        window.renderApp();
+                                    }
+                                }
+                            }
+                        }
+                    });
+                });
+            }
+        });
+
+        // Submit Saran ke Database
+        window.submitSuggestion = async function(event) {
+            event.preventDefault();
+            if (!currentUser) return;
+
+            const name = document.getElementById('saranName').value;
+            const address = document.getElementById('saranAddress').value;
+            const text = document.getElementById('saranText').value;
+            const btn = document.getElementById('saranSubmitBtn');
+            const statusEl = document.getElementById('saranStatus');
+
+            if(!name || !address || !text) return;
+
+            btn.disabled = true;
+            btn.innerHTML = "Mengirim...";
+            statusEl.classList.add('hidden');
+
+            try {
+                const suggestionsRef = collection(db, 'artifacts', appId, 'public', 'data', 'suggestions');
+                await addDoc(suggestionsRef, {
+                    name: name,
+                    address: address,
+                    text: text,
+                    timestamp: Date.now(),
+                    userId: currentUser.uid
+                });
+                document.getElementById('saranForm').reset();
+                statusEl.classList.remove('hidden');
+                setTimeout(() => statusEl.classList.add('hidden'), 3000);
+            } catch (error) {
+                console.error("Error: ", error);
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = "Kirim Saran";
+            }
+        };
+    </script>
+</body>
+</html>
